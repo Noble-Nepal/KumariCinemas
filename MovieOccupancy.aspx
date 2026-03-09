@@ -1,0 +1,70 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MovieOccupancy.aspx.cs" Inherits="KumariCinemas.MovieOccupancy" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Occupancy Report - Kumari Cinemas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+    <style>
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','Helvetica Neue',sans-serif;background:#fafafa}
+        .sidebar{width:240px;background:#fff;border-right:1px solid #e5e5e5;height:100vh;position:fixed;top:0;left:0;overflow-y:auto}
+        .sidebar-brand{padding:20px 20px 16px;border-bottom:1px solid #e5e5e5;font-weight:700;font-size:1.15rem;color:#1a1a1a}.sidebar-brand span{color:#e01e37}
+        .sidebar-nav{list-style:none;padding:12px 0;margin:0}
+        .sidebar-nav li a{display:flex;align-items:center;gap:10px;padding:10px 20px;color:#666;text-decoration:none;font-size:.9rem;font-weight:500;border-left:3px solid transparent;transition:all .2s}
+        .sidebar-nav li a:hover{color:#1a1a1a;background:#fafafa}.sidebar-nav li a.active{color:#e01e37;background:#fff5f7;border-left:3px solid #e01e37;font-weight:600}
+        .sidebar-nav li a i{font-size:1.1rem;width:20px;text-align:center}
+        .main-content{margin-left:240px;padding:32px}.page-header{font-size:1.75rem;font-weight:700;color:#1a1a1a;margin-bottom:24px}
+        .card-container{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+        .filter-card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.05);margin-bottom:20px}
+        .table thead th{background:#f8f9fa;font-size:.875rem;font-weight:600;text-transform:uppercase;color:#666;border-bottom:2px solid #e5e5e5;padding:12px 16px}
+        .table tbody td{padding:12px 16px;font-size:.95rem;vertical-align:middle;border-bottom:1px solid #e5e5e5;color:#1a1a1a}.table tbody tr:hover{background:#fafafa}
+        .btn-primary-custom{background:#1a1a1a;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:.9rem;font-weight:500}.btn-primary-custom:hover{background:#333;color:#fff}
+        .form-select:focus{border-color:#1a1a1a;box-shadow:0 0 0 2px rgba(26,26,26,.1)}.form-label{font-weight:500;font-size:.9rem;color:#1a1a1a}
+        .info-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px 20px;margin-bottom:20px}
+        .info-box h6{color:#10b981;font-weight:600;margin-bottom:4px}.info-box p{color:#666;margin:0;font-size:.88rem}
+        .rank-badge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-weight:700;font-size:.82rem}
+        .rank-1{background:#fefce8;color:#f59e0b}.rank-2{background:#f0f0f0;color:#666}.rank-3{background:#fff5f7;color:#e01e37}
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="sidebar"><div class="sidebar-brand"><span>Kumari</span>Cinemas</div>
+            <ul class="sidebar-nav">
+                <li><a href="Default.aspx"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li><li><a href="Customers.aspx"><i class="bi bi-people"></i> Customers</a></li>
+                <li><a href="Movies.aspx"><i class="bi bi-film"></i> Movies</a></li><li><a href="Theaters.aspx"><i class="bi bi-building"></i> Theaters</a></li>
+                <li><a href="Halls.aspx"><i class="bi bi-door-open"></i> Halls</a></li><li><a href="Showtimes.aspx"><i class="bi bi-clock"></i> Showtimes</a></li>
+                <li><a href="Tickets.aspx"><i class="bi bi-ticket-perforated"></i> Tickets</a></li>
+                <li style="padding-top:8px;border-top:1px solid #e5e5e5;margin-top:8px"><a href="UserTickets.aspx"><i class="bi bi-person-badge"></i> User Tickets</a></li>
+                <li><a href="TheaterCityHallMovie.aspx"><i class="bi bi-collection-play"></i> Theater Movies</a></li>
+                <li><a href="MovieOccupancy.aspx" class="active"><i class="bi bi-bar-chart-line"></i> Occupancy Report</a></li>
+            </ul></div>
+        <div class="main-content">
+            <h1 class="page-header">Movie Theater Occupancy Report</h1>
+            <div class="info-box"><h6><i class="bi bi-info-circle me-1"></i>About This Report</h6><p>For any movie, shows the top 3 theater city halls with maximum seat occupancy based on percentage. Only paid (Purchased) tickets count.</p></div>
+            <div class="filter-card">
+                <div class="row align-items-end">
+                    <div class="col-md-5"><label class="form-label">Select Movie</label><asp:DropDownList ID="ddlMovie" runat="server" CssClass="form-select" /></div>
+                    <div class="col-md-3"><asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn-primary-custom" OnClick="btnSearch_Click" /></div>
+                </div>
+            </div>
+            <div class="card-container">
+                <asp:GridView ID="gvResult" runat="server" AutoGenerateColumns="False" CssClass="table table-borderless mb-0" EmptyDataText="No occupancy data found.">
+                    <Columns>
+                        <asp:TemplateField HeaderText="Rank"><ItemTemplate>
+                            <span class='rank-badge rank-<%# Container.DataItemIndex + 1 %>'><%# Container.DataItemIndex + 1 %></span>
+                        </ItemTemplate></asp:TemplateField>
+                        <asp:BoundField DataField="THEATER_NAME" HeaderText="Theater" />
+                        <asp:BoundField DataField="CITY" HeaderText="City" />
+                        <asp:BoundField DataField="HALL_NAME" HeaderText="Hall" />
+                        <asp:BoundField DataField="HALL_CAPACITY" HeaderText="Capacity" />
+                        <asp:BoundField DataField="PAID_TICKETS" HeaderText="Paid Tickets" />
+                        <asp:BoundField DataField="OCCUPANCY_PCT" HeaderText="Occupancy %" DataFormatString="{0:F2}%" />
+                    </Columns>
+                </asp:GridView>
+            </div>
+        </div>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
