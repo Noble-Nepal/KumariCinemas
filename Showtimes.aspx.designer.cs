@@ -78,13 +78,40 @@ namespace KumariCinemas
         protected global::System.Web.UI.WebControls.TextBox txtDate;
 
         /// <summary>
-        /// txtTime control.
+        /// ddlTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTime;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTime;
+
+        /// <summary>
+        /// ddlTheater control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTheater;
+
+        /// <summary>
+        /// ddlHall control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlHall;
+
+        /// <summary>
+        /// ddlMovie control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlMovie;
 
         /// <summary>
         /// btnCancel control.

@@ -31,8 +31,7 @@ namespace KumariCinemas
             using (var conn = new OracleConnection(connectionString))
             {
                 conn.Open();
-                // SHOW_DATE and SHOW_TIME are VARCHAR2 - no TO_CHAR needed
-                // No DISTINCT with ORDER BY on non-selected columns
+                
                 string sql = @"SELECT M.MOVIE_TITLE, M.MOVIE_GENRE, M.MOVIE_LANGUAGE, M.MOVIE_DURATION,
                                H.HALL_NAME, H.HALL_CAPACITY,
                                S.SHOW_DATE, S.SHOW_TIME
